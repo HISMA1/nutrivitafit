@@ -1,0 +1,27 @@
+{
+  "name": "nutrivita-fit",
+  "version": "1.0.0",
+  "description": "AI-powered wellness and fitness tracking app for corporate teams",
+  "main": "nutrivita-fit.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o nutrivita-fit.html",
+    "build": "echo 'Single file app - no build needed'"
+  },
+  "keywords": [
+    "wellness",
+    "fitness",
+    "health",
+    "tracking",
+    "ai-coach",
+    "corporate",
+    "pwa",
+    "offline"
+  ],
+  "author": "HISMA1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HISMA1/nutrivitafit.git"
+  },
+  "homepage": "https://github.com/HISMA1/nutrivitafit"
+}
