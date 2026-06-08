@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1DB954">
+  <meta name="description" content="Download Nutrivita Fit - AI-powered wellness app for your phone">
+  <title>Nutrivita Fit - Download & Install</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: 'Syne', sans-serif;
+      background: linear-gradient(135deg, #0A0F0D 0%, #1a1f1c 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #EEF5EE;
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #111814;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 40px 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .logo {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #1DB954 0%, #17A349 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 48px;
+      box-shadow: 0 10px 30px rgba(29,185,84,0.3);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      color: #6B7C6B;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(29,185,84,0.15);
+      border: 1px solid rgba(29,185,84,0.3);
+      color: #4ADEAB;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+    .download-section {
+      margin: 30px 0;
+      padding: 24px;
+      background: rgba(29,185,84,0.05);
+      border: 1px solid rgba(29,185,84,0.2);
+      border-radius: 16px;
+    }
+    .download-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1DB954;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .download-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      background: #182018;
+      border: 1px solid rgba(29,185,84,0.3);
+      border-radius: 12px;
+      color: #EEF5EE;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: flex;
+    }
+    .download-btn:hover, .download-btn:active {
+      background: rgba(29,185,84,0.1);
+      border-color: #1DB954;
+      transform: translateX(4px);
+    }
+    .download-icon {
+      font-size: 20px;
+      margin-right: 12px;
+    }
+    .btn-text {
+      flex: 1;
+    }
+    .arrow {
+      color: #1DB954;
+      font-weight: 700;
+    }
+    .features {
+      margin: 30px 0;
+      padding: 20px;
+      background: #182018;
+      border-radius: 12px;
+    }
+    .features h3 {
+      font-size: 12px;
+      color: #1DB954;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .features-list {
+      list-style: none;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #6B7C6B;
+    }
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .features-list li:before {
+      content: "✓";
+      color: #1DB954;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .install-steps {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(96,165,250,0.05);
+      border: 1px solid rgba(96,165,250,0.2);
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #6B7C6B;
+    }
+    .install-steps h4 {
+      color: #60A5FA;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .os-section {
+      margin-bottom: 16px;
+    }
+    .os-section:last-child {
+      margin-bottom: 0;
+    }
+    .os-name {
+      color: #EEF5EE;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .steps {
+      list-style: decimal;
+      margin-left: 18px;
+      color: #EEF5EE;
+      font-size: 11px;
+    }
+    .steps li {
+      margin-bottom: 6px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 11px;
+      color: #6B7C6B;
+    }
+    .version {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+    .launch-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #1DB954 0%, #17A349 100%);
+      color: #0A0F0D;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 20px;
+    }
+    .launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(29,185,84,0.4);
+    }
+    @media (max-width: 380px) {
+      .container {
+        padding: 30px 16px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .download-btn {
+        font-size: 12px;
+        padding: 14px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">🌿</div>
+    <h1>Nutrivita Fit</h1>
+    <p class="tagline">AI-Powered Wellness & Fitness Tracker</p>
+    <div class="badge">✓ Ready to Download • v1.0</div>
+  </div>
+
+  <!-- Download Section -->
+  <div class="download-section">
+    <div class="download-title">📥 Download Options</div>
+    <div class="download-options">
+      <a href="nutrivita-fit.html" class="download-btn" download>
+        <span class="download-icon">💾</span>
+        <span class="btn-text">Save App File</span>
+        <span class="arrow">→</span>
+      </a>
+      <button class="download-btn" onclick="launchApp()" style="background: linear-gradient(135deg, rgba(29,185,84,0.2) 0%, rgba(29,185,84,0.1) 100%); border: 1px solid #1DB954;">
+        <span class="download-icon">🚀</span>
+        <span class="btn-text">Open App Now</span>
+        <span class="arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features">
+    <h3>✨ Key Features</h3>
+    <ul class="features-list">
+      <li>AI auto-detects 18+ sports</li>
+      <li>Real-time health tracking</li>
+      <li>Team leaderboards</li>
+      <li>NutriCoach AI assistant</li>
+      <li>Works 100% offline</li>
+      <li>Install as mobile app</li>
+    </ul>
+  </div>
+
+  <!-- Install Instructions -->
+  <div class="install-steps">
+    <h4>📱 Installation Steps</h4>
+    
+    <div class="os-section">
+      <div class="os-name">🤖 Android (Chrome/Firefox)</div>
+      <ol class="steps">
+        <li>Tap "Save App File" or "Open App Now"</li>
+        <li>If file saved, open it in your browser</li>
+        <li>Tap menu (⋮) → "Add to Home Screen"</li>
+        <li>App icon appears on your home screen!</li>
+      </ol>
+    </div>
+
+    <div class="os-section">
+      <div class="os-name">🍎 iPhone/iPad (Safari)</div>
+      <ol class="steps">
+        <li>Tap "Open App Now" button</li>
+        <li>Tap share button (↗️)</li>
+        <li>Tap "Add to Home Screen"</li>
+        <li>App icon appears on your home screen!</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Launch Button -->
+  <button class="launch-btn" onclick="launchApp()">
+    🚀 Launch App Directly
+  </button>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Corporate Wellness Platform</p>
+    <div class="version">v1.0 • Production Ready</div>
+  </div>
+</div>
+
+<script>
+function launchApp() {
+  // Open the app in the same window
+  window.location.href = 'nutrivita-fit.html';
+}
+
+// Log analytics
+console.log('Nutrivita Fit Download Portal - Ready for installation');
+</script>
+</body>
+</html>
