@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0A0F0D">
+<title>Nutrivita Fit</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --g1:#1DB954;--g2:#17A349;--bg:#0A0F0D;--surf:#111814;--surf2:#182018;
+    --bdr:rgba(255,255,255,0.07);--text:#EEF5EE;--muted:#6B7C6B;
+    --acc:#4ADEAB;--warn:#F59E0B;--danger:#F87171;--blue:#60A5FA;--purple:#A78BFA;
+  }
+  html,body{height:100%;background:#000;display:flex;justify-content:center;align-items:flex-start;font-family:'Syne',sans-serif}
+  #nv{
+    background:var(--bg);color:var(--text);width:100%;max-width:430px;
+    min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;
+  }
+  @media(min-width:500px){#nv{border-left:1px solid var(--bdr);border-right:1px solid var(--bdr)}}
+
+  .screen{display:none;flex-direction:column;height:100vh;overflow:hidden}
+  .screen.active{display:flex}
+
+  .sb{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 0;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0}
+  .hdr{padding:10px 20px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .logo{display:flex;align-items:center;gap:8px}
+  .logo-mark{width:30px;height:30px;border-radius:9px;background:var(--g1);display:flex;align-items:center;justify-content:center}
+  .logo-mark i{font-size:17px;color:#fff}
+  .logo-text{font-size:17px;font-weight:800;letter-spacing:-0.5px;color:var(--text)}
+  .logo-text span{color:var(--g1)}
+  .av{width:36px;height:36px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0A0F0D;flex-shrink:0;cursor:pointer}
+
+  .bnav{display:flex;background:var(--surf);border-top:0.5px solid var(--bdr);padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));flex-shrink:0}
+  .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;color:var(--muted);font-size:9px;user-select:none;transition:color .15s}
+  .ni i{font-size:22px}
+  .ni.on{color:var(--g1)}
+
+  .sb2{flex:1;overflow-y:auto;padding:0 18px 16px;-webkit-overflow-scrolling:touch}
+  .sb2::-webkit-scrollbar{display:none}
+
+  .card{background:var(--surf);border-radius:14px;border:0.5px solid var(--bdr);padding:14px;margin-bottom:10px}
+  .mg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:10px}
+  .mc{background:var(--surf);border-radius:13px;border:0.5px solid var(--bdr);padding:13px}
+  .ml{font-size:10px;color:var(--muted);margin-bottom:3px}
+  .mv{font-size:22px;font-weight:700;line-height:1}
+  .mu{font-size:10px;color:var(--muted);margin-left:2px;font-weight:400}
+  .ms{font-size:10px;color:var(--muted);margin-top:3px}
+
+  .sh{display:flex;justify-content:space-between;align-items:center;margin:10px 0 8px}
+  .sh h3{font-size:14px;font-weight:700;color:var(--text)}
+  .sa{font-size:11px;color:var(--acc);cursor:pointer}
+
+  .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+  .tg{background:rgba(29,185,84,0.15);color:#1DB954}
+  .tb{background:rgba(96,165,250,0.15);color:#60A5FA}
+  .tp{background:rgba(167,139,250,0.15);color:#A78BFA}
+  .tw{background:rgba(245,158,11,0.15);color:#F59E0B}
+  .tr{background:rgba(248,113,113,0.15);color:#F87171}
+
+  .ai-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:0.5px solid var(--bdr)}
+  .ai-row:last-child{border-bottom:none}
+  .aic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+
+  .chip{padding:7px 13px;border-radius:20px;font-size:11px;font-weight:600;border:0.5px solid var(--bdr);background:var(--surf2);cursor:pointer;transition:all .15s;user-select:none;color:var(--text)}
+  .chip.on{background:var(--g1);color:#0A0F0D;border-color:var(--g1)}
+
+  .liveb{display:inline-flex;align-items:center;gap:5px;background:rgba(248,113,113,0.12);border:0.5px solid rgba(248,113,113,0.35);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--danger);font-weight:600}
+  .ld{width:6px;height:6px;border-radius:50%;background:var(--danger);animation:pp 1.2s infinite}
+  @keyframes pp{0%,100%{opacity:1}50%{opacity:.25}}
+
+  .pbr{height:5px;background:var(--surf2);border-radius:3px;overflow:hidden}
+  .pbf{height:100%;border-radius:3px;background:var(--g1);transition:width .6s ease}
+
+  .trkbtn{width:100%;padding:16px;border-radius:13px;border:none;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s}
+  .trkbtn:active{transform:scale(.97)}
+  .trkbtn.start{background:var(--g1);color:#0A0F0D}
+  .trkbtn.stop{background:var(--danger);color:#fff}
+
+  .ls-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
+  .lsv{text-align:center}
+  .lsv .v{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text)}
+  .lsv .l{font-size:9px;color:var(--muted);margin-top:3px}
+
+  .wcard{background:var(--surf);border-radius:14px;border:0.5px solid var(--bdr);padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+  .wcard:hover,.wcard:active{border-color:rgba(29,185,84,0.4)}
+  .wci{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .wico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .diff{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600}
+  .de{background:rgba(29,185,84,0.12);color:#1DB954}
+  .dm{background:rgba(245,158,11,0.12);color:#F59E0B}
+
+  .lbi{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--bdr)}
+  .lbi:last-child{border-bottom:none}
+  .lbr{font-size:12px;font-weight:700;width:20px;text-align:center;font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0}
+  .lbav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+  .lbpts{font-size:13px;font-weight:700;font-family:'DM Mono',monospace;color:var(--g1)}
+
+  .lb-tab{padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;border:0.5px solid var(--bdr);background:var(--surf2);cursor:pointer;transition:all .15s;color:var(--text)}
+  .lb-tab.on{background:var(--g1);color:#0A0F0D;border-color:var(--g1)}
+
+  .msg{max-width:86%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.55;color:var(--text)}
+  .msg.ai-msg{background:var(--surf2);border-radius:14px 14px 14px 4px;align-self:flex-start}
+  .msg.u-msg{background:var(--g1);color:#0A0F0D;border-radius:14px 14px 4px 14px;align-self:flex-end;font-weight:600}
+
+  .dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--muted);margin:0 2px;animation:bn 1.2s infinite}
+  .dots span:nth-child(2){animation-delay:.15s}
+  .dots span:nth-child(3){animation-delay:.3s}
+  @keyframes bn{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+  .ci{flex:1;background:var(--surf2);border:0.5px solid var(--bdr);border-radius:12px;padding:10px 14px;font-family:'Syne',sans-serif;font-size:13px;color:var(--text);resize:none;outline:none;line-height:1.4}
+  .ci::placeholder{color:var(--muted)}
+  .ci:focus{border-color:rgba(29,185,84,0.4)}
+  .sb3{width:40px;height:40px;border-radius:11px;background:var(--g1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
+  .sb3:active{transform:scale(.92)}
+
+  .tog{width:40px;height:22px;border-radius:11px;background:var(--g1);position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+  .tog.off{background:var(--surf2)}
+  .tog::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;right:3px;transition:all .2s}
+  .tog.off::after{left:3px;right:auto}
+  .tog-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:0.5px solid var(--bdr)}
+  .tog-row:last-child{border-bottom:none}
+
+  input[type=text]{background:var(--surf2);border:0.5px solid var(--bdr);border-radius:10px;padding:11px 14px;font-family:'Syne',sans-serif;font-size:13px;color:var(--text);outline:none;width:100%;transition:border-color .2s}
+  input[type=text]:focus{border-color:rgba(29,185,84,0.5)}
+  input[type=text]::placeholder{color:var(--muted)}
+
+  .btn-pr{background:var(--g1);color:#0A0F0D;border:none;border-radius:11px;padding:13px 20px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:transform .15s}
+  .btn-pr:active{transform:scale(.97)}
+
+  .joined-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(29,185,84,0.12);border:0.5px solid rgba(29,185,84,0.35);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--g1);font-weight:600}
+  .joined-dot{width:6px;height:6px;border-radius:50%;background:var(--g1)}
+
+  .bar-chart{display:flex;align-items:flex-end;gap:5px;height:65px;padding-top:6px}
+  .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bb{width:100%;border-radius:3px 3px 0 0;background:var(--g1);opacity:.55}
+  .bb.t{opacity:1}
+  .bl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace}
+
+  .ring-wrap{display:flex;justify-content:center;align-items:center;padding:12px 0 6px;gap:16px}
+  .ring-legend{display:flex;flex-direction:column;gap:9px}
+  .rl-row{display:flex;align-items:center;gap:7px}
+  .rl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+  .podium-bar{border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+<div id="nv">
+
+  <!-- ===== HOME ===== -->
+  <div class="screen active" id="s-home">
+    <div class="sb"><span id="clock">9:41</span><span style="display:flex;gap:5px;align-items:center"><i class="ti ti-wifi" style="font-size:13px"></i><i class="ti ti-battery-3" style="font-size:13px"></i></span></div>
+    <div class="hdr">
+      <div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div>
+      <div class="av" onclick="go('profile')">AK</div>
+    </div>
+    <div class="sb2">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px" id="today-label">Monday, 8 June · Mumbai</div>
+
+      <div class="ring-wrap">
+        <svg width="148" height="148" viewBox="0 0 148 148">
+          <circle cx="74" cy="74" r="60" fill="none" stroke="var(--surf2)" stroke-width="11"/>
+          <circle cx="74" cy="74" r="60" fill="none" stroke="#1DB954" stroke-width="11" stroke-linecap="round" stroke-dasharray="376.99" stroke-dashoffset="96" transform="rotate(-90 74 74)"/>
+          <circle cx="74" cy="74" r="45" fill="none" stroke="var(--surf2)" stroke-width="9"/>
+          <circle cx="74" cy="74" r="45" fill="none" stroke="#60A5FA" stroke-width="9" stroke-linecap="round" stroke-dasharray="282.74" stroke-dashoffset="82" transform="rotate(-90 74 74)"/>
+          <circle cx="74" cy="74" r="31" fill="none" stroke="var(--surf2)" stroke-width="7"/>
+          <circle cx="74" cy="74" r="31" fill="none" stroke="#A78BFA" stroke-width="7" stroke-linecap="round" stroke-dasharray="194.78" stroke-dashoffset="64" transform="rotate(-90 74 74)"/>
+          <text x="74" y="69" text-anchor="middle" fill="#EEF5EE" font-size="19" font-weight="700" font-family="Syne,sans-serif">7,240</text>
+          <text x="74" y="84" text-anchor="middle" fill="#6B7C6B" font-size="10" font-family="Syne,sans-serif">steps today</text>
+        </svg>
+        <div class="ring-legend">
+          <div class="rl-row"><div class="rl-dot" style="background:#1DB954"></div><div><div style="font-size:12px;font-weight:600">Move</div><div style="font-size:10px;color:var(--muted)">482 / 600 kcal</div></div></div>
+          <div class="rl-row"><div class="rl-dot" style="background:#60A5FA"></div><div><div style="font-size:12px;font-weight:600">Exercise</div><div style="font-size:10px;color:var(--muted)">28 / 30 min</div></div></div>
+          <div class="rl-row"><div class="rl-dot" style="background:#A78BFA"></div><div><div style="font-size:12px;font-weight:600">Stand</div><div style="font-size:10px;color:var(--muted)">9 / 12 hrs</div></div></div>
+        </div>
+      </div>
+
+      <div class="mg">
+        <div class="mc"><div class="ml">Heart Rate</div><div class="mv" style="color:var(--danger)">72<span class="mu">bpm</span></div><div class="ms" style="color:var(--g1)">↑ normal resting</div></div>
+        <div class="mc"><div class="ml">Calories</div><div class="mv" style="color:var(--warn)">482<span class="mu">kcal</span></div><div class="ms" style="color:var(--g1)">↑ 12% vs yesterday</div></div>
+        <div class="mc"><div class="ml">Distance</div><div class="mv" style="color:var(--blue)">4.8<span class="mu">km</span></div><div class="ms" style="color:var(--g1)">↑ 0.7km streak</div></div>
+        <div class="mc"><div class="ml">Wellness Score</div><div class="mv" style="color:var(--g1)">84<span class="mu">/100</span></div><div class="ms" style="color:var(--muted)">Top 18% team</div></div>
+      </div>
+
+      <div class="card" style="padding:12px 14px">
+        <div class="sh"><h3>Weekly Steps</h3><span style="font-size:10px;color:var(--muted)">Mon–Sun</span></div>
+        <div class="bar-chart" id="hbc"></div>
+      </div>
+
+      <div class="sh"><h3>Recent Activity</h3><span class="sa">See all</span></div>
+      <div class="card" style="padding:3px 14px">
+        <div class="ai-row"><div class="aic" style="background:rgba(29,185,84,0.12)"><i class="ti ti-run" style="color:var(--g1)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:600">Morning Run <span class="tag tg">Auto</span></div><div style="font-size:11px;color:var(--muted)">Today · 6:42 AM · 28 min · 4.1 km</div></div><div style="font-size:13px;font-weight:700;color:var(--g1)">312 kcal</div></div>
+        <div class="ai-row"><div class="aic" style="background:rgba(96,165,250,0.12)"><i class="ti ti-ball-basketball" style="color:var(--blue)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:600">Basketball <span class="tag tb">Auto</span></div><div style="font-size:11px;color:var(--muted)">Yesterday · 6:10 PM · 45 min</div></div><div style="font-size:13px;font-weight:700;color:var(--g1)">410 kcal</div></div>
+        <div class="ai-row"><div class="aic" style="background:rgba(167,139,250,0.12)"><i class="ti ti-heart" style="color:var(--purple)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:600">Meditation <span class="tag tp">Wellness</span></div><div style="font-size:11px;color:var(--muted)">Yesterday · 8:00 PM · 15 min</div></div><div style="font-size:13px;font-weight:700;color:var(--purple)">+20 pts</div></div>
+      </div>
+    </div>
+    <div class="bnav">
+      <div class="ni on" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni" onclick="go('coach')"><i class="ti ti-brain"></i><span>Coach</span></div>
+    </div>
+  </div>
+
+  <!-- ===== TRACK ===== -->
+  <div class="screen" id="s-track">
+    <div class="sb"><span id="clock2">9:41</span></div>
+    <div class="hdr"><div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div><div class="av">AK</div></div>
+    <div class="sb2">
+      <div class="sh" style="margin-top:0"><h3>Sport Tracker</h3><span class="joined-badge"><div class="joined-dot"></div>Auto-detect ON</span></div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:10px">AI detects 18+ sport types using motion sensors, GPS &amp; heart rate patterns — no manual selection needed.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="tag tg">Running</span><span class="tag tb">Basketball</span><span class="tag tp">Swimming</span><span class="tag tg">Cycling</span><span class="tag tw">Football</span><span class="tag tb">Tennis</span><span class="tag tp">Badminton</span><span class="tag tw">Yoga</span><span class="tag tg">+10 more</span>
+        </div>
+      </div>
+      <div class="sh"><h3>Select Activity</h3></div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px" id="chips">
+        <div class="chip on" data-s="run" onclick="selS(this)">🏃 Run</div>
+        <div class="chip" data-s="bike" onclick="selS(this)">🚴 Cycle</div>
+        <div class="chip" data-s="ball" onclick="selS(this)">🏀 Basketball</div>
+        <div class="chip" data-s="swim" onclick="selS(this)">🏊 Swim</div>
+        <div class="chip" data-s="tennis" onclick="selS(this)">🎾 Tennis</div>
+        <div class="chip" data-s="yoga" onclick="selS(this)">🧘 Yoga</div>
+      </div>
+      <div class="card" id="lcard" style="display:none;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:14px;font-weight:700" id="lsname">Running</div>
+          <div class="liveb"><div class="ld"></div>LIVE</div>
+        </div>
+        <div class="ls-grid">
+          <div class="lsv"><div class="v" id="ltime">00:00</div><div class="l">Duration</div></div>
+          <div class="lsv"><div class="v" id="ldist">0.00</div><div class="l">km</div></div>
+          <div class="lsv"><div class="v" id="lhr">--</div><div class="l">bpm</div></div>
+        </div>
+        <div class="pbr" style="margin-bottom:14px"><div class="pbf" id="ibar" style="width:0%"></div></div>
+        <button class="trkbtn stop" onclick="stopT()"><i class="ti ti-player-stop"></i> Stop Session</button>
+      </div>
+      <button class="trkbtn start" id="startb" onclick="startT()"><i class="ti ti-player-play"></i> Start Session</button>
+    </div>
+    <div class="bnav">
+      <div class="ni" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni on" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni" onclick="go('coach')"><i class="ti ti-brain"></i><span>Coach</span></div>
+    </div>
+  </div>
+
+  <!-- ===== WELLNESS ===== -->
+  <div class="screen" id="s-wellness">
+    <div class="sb"><span>9:41</span></div>
+    <div class="hdr"><div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div><div class="av">AK</div></div>
+    <div class="sb2">
+      <div class="sh" style="margin-top:0"><h3>Wellness Activities</h3><span class="tag tw">+pts on completion</span></div>
+      <div class="mg" style="margin-bottom:12px">
+        <div class="mc"><div class="ml">Wellness Pts</div><div class="mv" style="color:var(--purple)" id="w-pts">1,240<span class="mu">pts</span></div><div class="ms" style="color:var(--g1)" id="w-today">+80 today</div></div>
+        <div class="mc"><div class="ml">Streak</div><div class="mv" style="color:var(--warn)">7<span class="mu">days</span></div><div class="ms" style="color:var(--muted)">Personal best 🔥</div></div>
+      </div>
+
+      <div class="sh"><h3>Mindfulness</h3></div>
+      <div class="wcard" onclick="logW(this,'Meditation',20,'purple')">
+        <div class="wci"><div class="wico" style="background:rgba(167,139,250,0.12)"><i class="ti ti-brain" style="color:var(--purple)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Guided Meditation</div><div style="font-size:11px;color:var(--muted)">10–20 min · Reduce stress &amp; improve focus</div></div><span class="diff de">+20 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--purple);width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">Tap to log today's session</div>
+      </div>
+
+      <div class="wcard" onclick="logW(this,'Breathwork',15,'purple')">
+        <div class="wci"><div class="wico" style="background:rgba(167,139,250,0.12)"><i class="ti ti-wind" style="color:var(--purple)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Breathwork</div><div style="font-size:11px;color:var(--muted)">5–10 min · Box breathing or 4-7-8 method</div></div><span class="diff de">+15 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--purple);width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">Tap to log today's session</div>
+      </div>
+
+      <div class="sh"><h3>Recovery</h3></div>
+      <div class="wcard" onclick="logW(this,'Sleep Tracking',25,'blue')">
+        <div class="wci"><div class="wico" style="background:rgba(96,165,250,0.12)"><i class="ti ti-moon" style="color:var(--blue)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Sleep Tracking</div><div style="font-size:11px;color:var(--muted)">Log 7–9 hrs · Quality sleep recovery</div></div><span class="diff dm">+25 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--blue);width:85%"></div></div>
+        <div style="font-size:10px;color:var(--g1);margin-top:5px" class="w-lbl">7h 12min logged last night ✓</div>
+      </div>
+
+      <div class="wcard" onclick="logW(this,'Morning Stretching',15,'g1')">
+        <div class="wci"><div class="wico" style="background:rgba(29,185,84,0.12)"><i class="ti ti-yoga" style="color:var(--g1)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Morning Stretching</div><div style="font-size:11px;color:var(--muted)">10 min · Improve flexibility &amp; posture</div></div><span class="diff de">+15 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">Tap to log today's session</div>
+      </div>
+
+      <div class="sh"><h3>Nutrition</h3></div>
+      <div class="wcard" onclick="logW(this,'Hydration Goal',10,'blue')">
+        <div class="wci"><div class="wico" style="background:rgba(96,165,250,0.12)"><i class="ti ti-droplet" style="color:var(--blue)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Hydration Goal</div><div style="font-size:11px;color:var(--muted)">8 glasses · 2 litres daily target</div></div><span class="diff de">+10 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--blue);width:62%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">5 / 8 glasses today — tap to complete</div>
+      </div>
+
+      <div class="wcard" onclick="logW(this,'Balanced Meal Log',20,'warn')">
+        <div class="wci"><div class="wico" style="background:rgba(245,158,11,0.12)"><i class="ti ti-salad" style="color:var(--warn)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Balanced Meal Log</div><div style="font-size:11px;color:var(--muted)">Log nutritious meals · Protein, fibre &amp; vitamins</div></div><span class="diff dm">+20 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--warn);width:33%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">1 / 3 meals logged today — tap to update</div>
+      </div>
+
+      <div class="sh"><h3>Mental Health</h3></div>
+      <div class="wcard" onclick="logW(this,'Mood Check-in',10,'purple')">
+        <div class="wci"><div class="wico" style="background:rgba(167,139,250,0.12)"><i class="ti ti-mood-smile" style="color:var(--purple)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Daily Mood Check-in</div><div style="font-size:11px;color:var(--muted)">2 min · Track emotional wellbeing</div></div><span class="diff de">+10 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--purple);width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">Tap to log today's mood</div>
+      </div>
+
+      <div class="wcard" onclick="logW(this,'Gratitude Journal',10,'purple')">
+        <div class="wci"><div class="wico" style="background:rgba(167,139,250,0.12)"><i class="ti ti-notebook" style="color:var(--purple)"></i></div><div style="flex:1"><div style="font-size:13px;font-weight:700">Gratitude Journal</div><div style="font-size:11px;color:var(--muted)">3 min · Write 3 things you're grateful for</div></div><span class="diff de">+10 pts</span></div>
+        <div class="pbr"><div class="pbf w-bar" style="background:var(--purple);width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px" class="w-lbl">Tap to log today's entry</div>
+      </div>
+    </div>
+    <div class="bnav">
+      <div class="ni" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni on" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni" onclick="go('coach')"><i class="ti ti-brain"></i><span>Coach</span></div>
+    </div>
+  </div>
+
+  <!-- ===== LEADERBOARD ===== -->
+  <div class="screen" id="s-lb">
+    <div class="sb"><span>9:41</span></div>
+    <div class="hdr"><div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div><span class="joined-badge"><div class="joined-dot"></div><span id="emp-count">24</span> Employees</span></div>
+    <div class="sb2">
+      <div class="card" id="signup-card" style="background:rgba(29,185,84,0.05);border-color:rgba(29,185,84,0.3);margin-bottom:12px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">Join the Leaderboard</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Register to compete with colleagues and earn wellness points.</div>
+        <input type="text" id="reg-name" placeholder="Your full name" style="margin-bottom:8px">
+        <input type="text" id="reg-dept" placeholder="Department (e.g. Engineering)" style="margin-bottom:12px">
+        <button class="btn-pr" onclick="registerUser()">Join Nutrivita Fit</button>
+      </div>
+
+      <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+        <div class="lb-tab on" onclick="showLB('overall',this)">Overall</div>
+        <div class="lb-tab" onclick="showLB('fitness',this)">Fitness</div>
+        <div class="lb-tab" onclick="showLB('wellness',this)">Wellness</div>
+        <div class="lb-tab" onclick="showLB('dept',this)">Department</div>
+      </div>
+
+      <div style="display:flex;justify-content:center;align-items:flex-end;gap:8px;margin-bottom:14px">
+        <div style="text-align:center;flex:1">
+          <div style="font-size:9px;color:var(--muted);margin-bottom:4px">2nd</div>
+          <div class="lbav" style="background:rgba(192,192,192,0.15);color:#C0C0C0;margin:0 auto;width:40px;height:40px;font-size:11px">RK</div>
+          <div style="font-size:11px;font-weight:700;margin-top:4px;color:var(--text)">Rohan K.</div>
+          <div class="podium-bar" style="background:rgba(192,192,192,0.1);border:0.5px solid rgba(192,192,192,0.2);height:48px;margin-top:6px;color:#C0C0C0">88,730</div>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:14px;margin-bottom:3px">👑</div>
+          <div class="lbav" style="background:rgba(255,215,0,0.15);color:#FFD700;margin:0 auto;width:46px;height:46px;font-size:12px">PR</div>
+          <div style="font-size:11px;font-weight:700;margin-top:4px;color:var(--text)">Priya R.</div>
+          <div class="podium-bar" style="background:rgba(255,215,0,0.08);border:0.5px solid rgba(255,215,0,0.2);height:66px;margin-top:6px;color:#FFD700">92,410</div>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:9px;color:var(--muted);margin-bottom:4px">3rd</div>
+          <div class="lbav" style="background:rgba(205,127,50,0.15);color:#CD7F32;margin:0 auto;width:40px;height:40px;font-size:11px">AK</div>
+          <div style="font-size:11px;font-weight:700;margin-top:4px;color:var(--text)">Aditya K.</div>
+          <div class="podium-bar" style="background:rgba(205,127,50,0.08);border:0.5px solid rgba(205,127,50,0.2);height:36px;margin-top:6px;color:#CD7F32">84,220</div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:3px 14px" id="lb-list"></div>
+
+      <div class="card" style="margin-top:10px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Monthly Challenges</div>
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>June Step Challenge</span><span style="color:var(--g1);font-weight:600">217,200 / 300,000</span></div>
+          <div class="pbr"><div class="pbf" style="width:72%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Wellness Week</span><span style="color:var(--purple);font-weight:600">5 / 7 days</span></div>
+          <div class="pbr"><div class="pbf" style="width:71%;background:var(--purple)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="bnav">
+      <div class="ni" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni on" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni" onclick="go('coach')"><i class="ti ti-brain"></i><span>Coach</span></div>
+    </div>
+  </div>
+
+  <!-- ===== COACH ===== -->
+  <div class="screen" id="s-coach">
+    <div class="sb" style="flex-shrink:0"><span>9:41</span><div style="width:8px;height:8px;border-radius:50%;background:var(--g1)"></div></div>
+    <div class="hdr" style="flex-shrink:0"><div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div></div>
+    <div style="padding:0 18px 10px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:11px;padding:12px;background:var(--surf2);border-radius:13px">
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--g1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-robot" style="font-size:22px;color:#0A0F0D"></i></div>
+        <div><div style="font-size:14px;font-weight:700">NutriCoach AI</div><div style="font-size:11px;color:var(--g1)">● Online · Personalised to your data</div></div>
+      </div>
+    </div>
+    <div class="sb2" id="cscroll" style="padding-top:0">
+      <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:10px" id="cbody">
+        <div class="msg ai-msg">Hey Aditya! 💪 You're crushing it — 7,240 steps and a morning run already. You're just 118 kcal from your move goal. Your wellness score is 84/100. Want tips to hit 90 this week?</div>
+        <div class="msg ai-msg">I also noticed you haven't logged your meditation today. A 10-min session earns you 20 wellness points and puts you ahead of Rohan on the leaderboard! 🧘</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="qr">
+        <button class="chip" style="font-size:10px;padding:5px 9px" onclick="sq('How do I improve my wellness score?')">Wellness tips ↗</button>
+        <button class="chip" style="font-size:10px;padding:5px 9px" onclick="sq('Suggest a workout to close my rings')">Close rings ↗</button>
+        <button class="chip" style="font-size:10px;padding:5px 9px" onclick="sq('What should I eat today?')">Nutrition plan ↗</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-end;padding:8px 18px 16px;flex-shrink:0;padding-bottom:max(16px,env(safe-area-inset-bottom))">
+      <textarea class="ci" id="ci" rows="1" placeholder="Ask NutriCoach anything..."></textarea>
+      <button class="sb3" onclick="sm()" aria-label="Send"><i class="ti ti-send" style="font-size:16px;color:#0A0F0D"></i></button>
+    </div>
+    <div class="bnav" style="flex-shrink:0">
+      <div class="ni" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni on" onclick="go('coach')"><i class="ti ti-brain"></i><span>Coach</span></div>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE ===== -->
+  <div class="screen" id="s-profile">
+    <div class="sb"><span>9:41</span></div>
+    <div class="hdr"><div class="logo"><div class="logo-mark"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="logo-text">Nutri<span>vita</span> Fit</div></div></div>
+    <div class="sb2">
+      <div class="card" style="text-align:center;padding:22px 14px">
+        <div style="width:66px;height:66px;border-radius:50%;background:var(--g1);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#0A0F0D">AK</div>
+        <div style="font-size:17px;font-weight:700">Aditya Kumar</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Engineering · Mumbai Office</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-top:10px">
+          <span class="tag tg">Streak: 7d 🔥</span><span class="tag tb">Level 12</span>
+        </div>
+      </div>
+      <div class="mg">
+        <div class="mc"><div class="ml">This Month</div><div class="mv" style="color:var(--g1)">84,220<span class="mu" style="font-size:9px">steps</span></div></div>
+        <div class="mc"><div class="ml">Sessions</div><div class="mv" style="color:var(--blue)">18<span class="mu">total</span></div></div>
+      </div>
+      <div class="sh"><h3>Daily Goals</h3></div>
+      <div class="card" style="padding:14px">
+        <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Steps</span><span style="color:var(--g1);font-weight:600">7,240 / 10,000</span></div><div class="pbr"><div class="pbf" style="width:72%"></div></div></div>
+        <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Calories</span><span style="color:var(--warn);font-weight:600">482 / 600</span></div><div class="pbr"><div class="pbf" style="width:80%;background:var(--warn)"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Exercise</span><span style="color:var(--blue);font-weight:600">28 / 30 min</span></div><div class="pbr"><div class="pbf" style="width:93%;background:var(--blue)"></div></div></div>
+      </div>
+      <div class="sh"><h3>Settings</h3></div>
+      <div class="card" style="padding:4px 14px">
+        <div class="tog-row"><div><div style="font-size:13px;font-weight:600">Auto-detect Sports</div><div style="font-size:11px;color:var(--muted)">AI identifies your activity type</div></div><div class="tog" onclick="this.classList.toggle('off')"></div></div>
+        <div class="tog-row"><div><div style="font-size:13px;font-weight:600">Heart Rate Monitor</div><div style="font-size:11px;color:var(--muted)">Continuous tracking</div></div><div class="tog" onclick="this.classList.toggle('off')"></div></div>
+        <div class="tog-row"><div><div style="font-size:13px;font-weight:600">Coach Reminders</div><div style="font-size:11px;color:var(--muted)">AI-driven nudges</div></div><div class="tog" onclick="this.classList.toggle('off')"></div></div>
+        <div class="tog-row"><div><div style="font-size:13px;font-weight:600">Team Visibility</div><div style="font-size:11px;color:var(--muted)">Share progress with colleagues</div></div><div class="tog off" onclick="this.classList.toggle('off')"></div></div>
+      </div>
+    </div>
+    <div class="bnav">
+      <div class="ni" onclick="go('home')"><i class="ti ti-home-2"></i><span>Home</span></div>
+      <div class="ni" onclick="go('track')"><i class="ti ti-player-record"></i><span>Track</span></div>
+      <div class="ni" onclick="go('wellness')"><i class="ti ti-leaf"></i><span>Wellness</span></div>
+      <div class="ni" onclick="go('lb')"><i class="ti ti-trophy"></i><span>Leaderboard</span></div>
+      <div class="ni on" onclick="go('profile')"><i class="ti ti-user"></i><span>Profile</span></div>
+    </div>
+  </div>
+
+</div>
+<script>
+const TABS=['home','track','wellness','lb','coach','profile'];
+let trk=null,ts=0,tdist=0,sel='run',wpts=1240,wToday=80;
+const SNAMES={run:'Running',bike:'Cycling',ball:'Basketball',swim:'Swimming',tennis:'Tennis',yoga:'Yoga'};
+const AVB=['rgba(255,215,0,0.12)','rgba(96,165,250,0.12)','rgba(29,185,84,0.12)','rgba(167,139,250,0.12)','rgba(245,158,11,0.12)','rgba(248,113,113,0.12)','rgba(74,222,171,0.12)'];
+const AVC=['#FFD700','#60A5FA','#1DB954','#A78BFA','#F59E0B','#F87171','#4ADEAB'];
+const RANK_C=['#FFD700','#C0C0C0','#CD7F32'];
+const LB_DATA={
+  overall:[['PR','Priya Rao','HR',92410],['RK','Rohan Kapoor','Engineering',88730],['AK','Aditya Kumar','Engineering',84220,true],['SM','Sanya Mehta','Marketing',79650],['VN','Vikram Nair','Sales',74180],['DS','Divya Sharma','Finance',69420],['AP','Arjun Pillai','Product',64810]],
+  fitness:[['RK','Rohan Kapoor','21 sessions',91200],['PR','Priya Rao','18 sessions',87500],['AK','Aditya Kumar','16 sessions',81000,true],['VN','Vikram Nair','12 sessions',72000],['DS','Divya Sharma','11 sessions',65000],['SM','Sanya Mehta','10 sessions',61000],['AP','Arjun Pillai','10 sessions',58000]],
+  wellness:[['PR','Priya Rao','1,240 pts',94800],['SM','Sanya Mehta','1,190 pts',88200],['AK','Aditya Kumar','1,240 pts',84000,true],['DS','Divya Sharma','1,050 pts',74000],['AP','Arjun Pillai','980 pts',69000],['RK','Rohan Kapoor','920 pts',64000],['VN','Vikram Nair','880 pts',59000]],
+  dept:[['Eng','Engineering','8 members',86500],['HR','Human Resources','5 members',82100],['Mkt','Marketing','6 members',76400],['Fin','Finance','4 members',71200],['Sls','Sales','3 members',68900]]
+};
+let newUsers=[];
+let currentLBType='overall';
+
+function go(t){
+  TABS.forEach(x=>{const s=document.getElementById('s-'+x);if(s)s.classList.toggle('active',x===t);});
+  if(t==='lb')renderLB(currentLBType);
+}
+
+function selS(el){document.querySelectorAll('#chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');sel=el.dataset.s;}
+
+function startT(){
+  document.getElementById('startb').style.display='none';
+  document.getElementById('lcard').style.display='block';
+  document.getElementById('lsname').textContent=SNAMES[sel]||'Activity';
+  ts=0;tdist=0;clearInterval(trk);
+  trk=setInterval(()=>{
+    ts++;tdist+=(Math.random()*0.005+0.002);
+    const m=String(Math.floor(ts/60)).padStart(2,'0'),s=String(ts%60).padStart(2,'0');
+    document.getElementById('ltime').textContent=m+':'+s;
+    document.getElementById('ldist').textContent=tdist.toFixed(2);
+    document.getElementById('lhr').textContent=Math.round(130+Math.random()*25);
+    document.getElementById('ibar').style.width=Math.min(100,Math.round((ts/180)*100))+'%';
+  },1000);
+}
+function stopT(){clearInterval(trk);document.getElementById('lcard').style.display='none';document.getElementById('startb').style.display='flex';}
+
+(function buildBars(){
+  const days=['M','T','W','T','F','S','S'],vals=[6200,8100,5400,9300,7100,8800,7240],mx=Math.max(...vals);
+  const hbc=document.getElementById('hbc');
+  days.forEach((d,i)=>{
+    const col=document.createElement('div');col.className='bc';
+    const bar=document.createElement('div');bar.className='bb'+(i===6?' t':'');
+    bar.style.height=Math.round((vals[i]/mx)*58)+'px';
+    const lbl=document.createElement('div');lbl.className='bl';lbl.textContent=d;
+    col.appendChild(bar);col.appendChild(lbl);hbc.appendChild(col);
+  });
+})();
+
+function logW(card,name,pts,color){
+  const bar=card.querySelector('.w-bar'),lbl=card.querySelector('.w-lbl');
+  if(bar&&bar.style.width==='100%')return;
+  if(bar){bar.style.width='100%';}
+  if(lbl){lbl.style.color='var(--g1)';lbl.textContent=name+' logged today ✓ +'+pts+' pts';}
+  wpts+=pts;wToday+=pts;
+  const pe=document.getElementById('w-pts');
+  const te=document.getElementById('w-today');
+  if(pe)pe.innerHTML=wpts.toLocaleString()+'<span class="mu">pts</span>';
+  if(te)te.textContent='+'+wToday+' today';
+}
+
+function renderLB(type){
+  currentLBType=type;
+  const list=document.getElementById('lb-list');
+  if(!list)return;
+  list.innerHTML='';
+  const data=[...(LB_DATA[type]||LB_DATA.overall),...newUsers.map((u,i)=>[u.initials,u.name,u.dept,u.pts])];
+  data.sort((a,b)=>b[b.length-1]-a[a.length-1]);
+  data.slice(0,10).forEach((r,i)=>{
+    const isYou=r[4]===true||newUsers.some(u=>u.name===r[1]&&u.isYou);
+    const div=document.createElement('div');div.className='lbi';
+    if(isYou)div.style.cssText='background:rgba(29,185,84,0.05);border-radius:8px;padding:10px 4px;margin:2px -4px';
+    const rc=RANK_C[i]||'var(--muted)';
+    const pts=r[r.length-1];
+    div.innerHTML=`<div class="lbr" style="color:${rc}">${i+1}</div><div class="lbav" style="background:${AVB[i%7]};color:${AVC[i%7]}">${r[0]}</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${r[1]}${isYou?'<span class="tag tg" style="margin-left:4px">You</span>':''}</div><div style="font-size:10px;color:var(--muted)">${r[2]||''}</div></div><div class="lbpts">${Number(pts).toLocaleString()}</div>`;
+    list.appendChild(div);
+  });
+}
+
+function showLB(type,el){
+  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');renderLB(type);
+}
+
+function registerUser(){
+  const name=document.getElementById('reg-name').value.trim();
+  const dept=document.getElementById('reg-dept').value.trim();
+  if(!name){document.getElementById('reg-name').focus();return;}
+  const initials=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'??';
+  const pts=Math.round(2000+Math.random()*8000);
+  newUsers.push({name,dept:dept||'Employee',initials,pts,isYou:true});
+  const card=document.getElementById('signup-card');
+  card.style.background='rgba(29,185,84,0.06)';card.style.borderColor='rgba(29,185,84,0.35)';
+  card.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="joined-badge"><div class="joined-dot"></div>Registered!</div></div><div style="font-size:14px;font-weight:700;color:var(--text)">${name}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">${dept||'Employee'} · Joined Nutrivita Fit today 🎉</div>`;
+  const cnt=document.getElementById('emp-count');
+  if(cnt)cnt.textContent=parseInt(cnt.textContent)+1;
+  renderLB(currentLBType);
+}
+
+const COACH_R={
+  'wellness score':'Here are 3 quick wins to push your score to 90:\n\n1. Log your meditation today (+20 pts)\n2. Complete hydration — 3 more glasses (+10 pts)\n3. Do your morning stretch (+15 pts)\n\nThat\'s +45 pts in under 30 min! 💚',
+  'close my rings':'You\'re so close! A 20-min plan:\n\n• 10 min jog → closes Move ring ✓\n• 8 min brisk walk → closes Exercise ✓\n• 2 min stretch → closes Stand ✓\n\nHead outside at 5pm — the evening air is perfect!',
+  'eat today':'Based on your activity today, here\'s your Nutrivita plan:\n\nLunch: Brown rice + dal + salad (~450 kcal)\nSnack: Handful of nuts + banana\nDinner: Grilled chicken / paneer + veggies\n\nTarget: 1,800 kcal. You\'re at 920 kcal so far. 3 more glasses of water to hit your hydration goal! 💧',
+  'running':'Based on your data, here are tips to improve your pace:\n\n1. Cadence — aim for 170–180 steps/min\n2. Add 1 interval session per week\n3. Recovery matters — easy effort today after yesterday\'s basketball\n4. Try 2-2 breathing rhythm\n\nYour consistency is your biggest asset! 🏃',
+};
+
+function sq(t){document.getElementById('ci').value=t;sm();}
+function sm(){
+  const inp=document.getElementById('ci'),txt=inp.value.trim();
+  if(!txt)return;inp.value='';
+  const body=document.getElementById('cbody'),scroll=document.getElementById('cscroll');
+  const um=document.createElement('div');um.className='msg u-msg';um.textContent=txt;body.appendChild(um);
+  const typ=document.createElement('div');typ.className='msg ai-msg';typ.innerHTML='<div class="dots"><span></span><span></span><span></span></div>';
+  body.appendChild(typ);scroll.scrollTop=scroll.scrollHeight;
+  document.getElementById('qr').style.display='none';
+  const key=txt.toLowerCase();
+  const match=Object.keys(COACH_R).find(k=>key.includes(k));
+  const reply=match?COACH_R[match]:'Great question! Based on your Nutrivita data, consistency is your superpower right now. You\'ve hit a 7-day streak — keep it going! Small daily wins compound into big results. Anything specific you want to work on? 💚';
+  setTimeout(()=>{
+    body.removeChild(typ);
+    const am=document.createElement('div');am.className='msg ai-msg';am.textContent=reply;
+    body.appendChild(am);scroll.scrollTop=scroll.scrollHeight;
+  },1400);
+}
+document.getElementById('ci').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sm();}});
+
+(function clock(){
+  const now=new Date();
+  const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  ['clock','clock2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t;});
+  setTimeout(clock,10000);
+})();
+
+renderLB('overall');
+</script>
+</body>
+</html>
